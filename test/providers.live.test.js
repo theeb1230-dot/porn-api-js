@@ -40,3 +40,27 @@ test("XHamster live search returns structured results", { skip: !enabled, timeou
   assert.ok(r?.success, "provider returned no successful payload");
   assert.ok(Array.isArray(r.data) && r.data.length > 0, "provider returned no results");
 });
+
+
+test("EPorner live details and sources resolve", { skip: !enabled, timeout: 30000 }, async () => {
+  const search = await getSearchResults("test", "1", "1", "medium", "latest", "0", "1");
+  const id = search?.json?.details?.videos?.[0]?.id;
+  assert.ok(id, "search did not yield an id");
+  const { getVideoDetails } = await import("../src/MediaDetails.js");
+  const { getVideoSources } = await import("../src/Resolver.js");
+  const details = await getVideoDetails(id, "medium");
+  const sources = await getVideoSources(id);
+  assert.ok(details?.json?.details?.id, "details did not resolve");
+  assert.ok(Array.isArray(sources?.sources) || typeof sources?.sources === "object", "sources did not resolve");
+});
+
+test("XHamster live details resolves from a live search id", { skip: !enabled, timeout: 30000 }, async () => {
+  const search = await searchXhamster("test", "1");
+  const id = search?.data?.[0]?.id;
+  assert.ok(id, "search did not yield an id");
+  const { getXhamsterVideo } = await import("../src/xhamster/XhamsterGet.js");
+  const details = await getXhamsterVideo(id);
+  assert.ok(details?.success, "details did not resolve");
+  assert.equal(details.data.id, id, "resolved id mismatch");
+  assert.ok(Array.isArray(details.data.sources), "sources must be an array");
+});
