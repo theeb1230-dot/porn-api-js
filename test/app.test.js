@@ -17,13 +17,13 @@ test("web console, API metadata and health work without provider network", async
   assert.match(root.headers.get("content-type") || "", /text\/html/);
   const html = await root.text();
   assert.match(html, /API Test Console/);
-  assert.match(html, /Safe player demo/);
+  assert.match(html, /Professional player demo/);
   assert.match(html, /<video[^>]+controls/);
-  assert.match(html, /data-quality="720p"/);
+  assert.match(html, /"720p"/);
   assert.match(html, /demoSources/);
 
   const meta = await fetch(`http://127.0.0.1:${port}/api`);
-  assert.equal(meta.status, 200);
+  const ready = await fetch(`http://127.0.0.1:${port}/ready`);\n  assert.equal(ready.status, 200);\n  const diagnostics = await fetch(`http://127.0.0.1:${port}/api/diagnostics`);\n  assert.equal(diagnostics.status, 200);\n\n  assert.equal(meta.status, 200);
   const body = await meta.json();
   assert.ok(body.providers.eporner);
   assert.ok(body.providers.xhamster);
