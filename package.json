@@ -10,11 +10,16 @@
     "test": "node --test",
     "check": "node --check index.js"
   },
-  "engines": { "node": ">=20.18.1" },
+  "engines": {
+    "node": ">=24"
+  },
   "author": "Inside4ndroid Studios Ltd; maintained fork by theeb1230-dot",
   "license": "ISC",
   "dependencies": {
     "cheerio": "^1.2.0",
-    "express": "^4.18.2"
+    "express": "^5.1.0"
+  },
+  "overrides": {
+    "undici": "^7.29.0"
   }
 }
