@@ -23,7 +23,7 @@ test("web lab, API metadata, health, readiness and diagnostics work offline", as
   assert.match(html, /Professional player demo/);
   assert.match(html, /<video[^>]+controls/);
   assert.match(html, /HLS Auto/);
-  assert.match(html, /Provider Health/);
+  assert.match(html, /Provider Health/);\n  assert.match(html, /data-tab="search"/);\n  assert.match(html, /searchProvider/);\n  assert.match(html, /inspectResult/);
   assert.match(html, /Diagnostics/);
   assert.match(html, /demoSources/);
 
