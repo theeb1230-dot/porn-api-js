@@ -8,6 +8,7 @@ import { getXhamsterVideo } from "./src/xhamster/XhamsterGet.js";
 import { searchXhamster } from "./src/xhamster/XhamsterSearch.js";
 
 export const app = express();
+app.use(express.static(new URL("./public", import.meta.url).pathname));
 
 function normalizeEpornerVideo(details) {
   const sources = Object.values(details.sources?.mp4 || {}).map(s => ({ quality: s.labelShort, url: s.src }));
@@ -18,7 +19,7 @@ function normalizeEpornerSearchResult(d) {
 }
 app.get("/health", (_req,res)=>res.json({status:"ok",service:"porn-api-js"}));
 app.get("/swagger.json", (_req,res)=>{res.type("json").send(readFileSync(new URL("./swagger.json", import.meta.url)));});
-app.get("/", (_req,res)=>res.json({intro:"Unofficial multi-provider API",providers:{eporner:{search:"/api/eporner/search/:query",details:"/api/eporner/details/:id"},xhamster:{search:"/api/xhamster/search/:query",details:"/api/xhamster/details/:id"}}}));
+app.get("/api", (_req,res)=>res.json({intro:"Unofficial multi-provider API",providers:{eporner:{search:"/api/eporner/search/:query",details:"/api/eporner/details/:id"},xhamster:{search:"/api/xhamster/search/:query",details:"/api/xhamster/details/:id"}}}));
 app.get("/api/eporner/details/:id", async(req,res)=>{
   const [details,sources]=await Promise.all([getVideoDetails(req.params.id,req.query.thumbsize||"medium"),getVideoSources(req.params.id)]);
   if(!details||!sources) return res.status(502).json({success:false,error:"provider_unavailable"});
