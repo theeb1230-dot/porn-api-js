@@ -21,7 +21,9 @@ test("web lab, search UI, API metadata, health, readiness and diagnostics work o
   assert.match(html, /Professional player demo/);
   assert.match(html, /<video[^>]+controls/);
   assert.match(html, /HLS Auto/);
-  assert.match(html, /Provider Health/);
+  assert.match(html, /externalUrl/);
+  assert.match(html, /Load URL/);
+  assert.match(html, /Raw API response/);
   assert.match(html, /data-tab="search"/);
   assert.match(html, /searchProvider/);
   assert.match(html, /searchTags/);
