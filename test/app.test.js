@@ -15,7 +15,10 @@ test("web console, API metadata and health work without provider network", async
   const root = await fetch(`http://127.0.0.1:${port}/`);
   assert.equal(root.status, 200);
   assert.match(root.headers.get("content-type") || "", /text\/html/);
-  assert.match(await root.text(), /API Test Console/);
+  const html = await root.text();
+  assert.match(html, /API Test Console/);
+  assert.match(html, /Safe player demo/);
+  assert.match(html, /<video[^>]+controls/);
 
   const meta = await fetch(`http://127.0.0.1:${port}/api`);
   assert.equal(meta.status, 200);
