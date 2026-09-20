@@ -19,6 +19,8 @@ test("web console, API metadata and health work without provider network", async
   assert.match(html, /API Test Console/);
   assert.match(html, /Safe player demo/);
   assert.match(html, /<video[^>]+controls/);
+  assert.match(html, /data-quality="720p"/);
+  assert.match(html, /demoSources/);
 
   const meta = await fetch(`http://127.0.0.1:${port}/api`);
   assert.equal(meta.status, 200);
