@@ -1,0 +1,21 @@
+name: Provider live smoke
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * *"
+permissions:
+  contents: read
+jobs:
+  providers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LIVE_PROVIDER_TESTS: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20.18.1"
+          cache: npm
+      - run: npm ci
+      - run: node --test test/providers.live.test.js
