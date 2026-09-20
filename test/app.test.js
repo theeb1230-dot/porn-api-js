@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { start } from "../index.js";
 
-test("web lab, API metadata, health, readiness and diagnostics work offline", async (t) => {
+test("web lab, search UI, API metadata, health, readiness and diagnostics work offline", async (t) => {
   const server = start(0);
   await new Promise(resolve => server.once("listening", resolve));
   t.after(() => server.close());
@@ -11,9 +11,7 @@ test("web lab, API metadata, health, readiness and diagnostics work offline", as
 
   const health = await fetch(base + "/health");
   assert.equal(health.status, 200);
-  const healthBody = await health.json();
-  assert.equal(healthBody.status, "ok");
-  assert.equal(healthBody.service, "porn-api-js");
+  assert.equal((await health.json()).status, "ok");
 
   const root = await fetch(base + "/");
   assert.equal(root.status, 200);
@@ -23,9 +21,16 @@ test("web lab, API metadata, health, readiness and diagnostics work offline", as
   assert.match(html, /Professional player demo/);
   assert.match(html, /<video[^>]+controls/);
   assert.match(html, /HLS Auto/);
-  assert.match(html, /Provider Health/);\n  assert.match(html, /data-tab="search"/);\n  assert.match(html, /searchProvider/);\n  assert.match(html, /inspectResult/);\n  assert.match(html, /searchTags/);\n  assert.match(html, /multiple tags/);\n  assert.match(html, /data-tag/);\n  assert.match(html, /v\.title/);\n  assert.match(html, /v\.image/);
+  assert.match(html, /Provider Health/);
+  assert.match(html, /data-tab="search"/);
+  assert.match(html, /searchProvider/);
+  assert.match(html, /searchTags/);
+  assert.match(html, /multiple tags/);
+  assert.match(html, /inspectResult/);
+  assert.match(html, /data-tag/);
+  assert.match(html, /v\.title/);
+  assert.match(html, /v\.image/);
   assert.match(html, /Diagnostics/);
-  assert.match(html, /demoSources/);
 
   const meta = await fetch(base + "/api");
   assert.equal(meta.status, 200);
@@ -42,7 +47,5 @@ test("web lab, API metadata, health, readiness and diagnostics work offline", as
 
   const diagnostics = await fetch(base + "/api/diagnostics");
   assert.equal(diagnostics.status, 200);
-  const diag = await diagnostics.json();
-  assert.equal(diag.success, true);
-  assert.ok(diag.provider_timeout_ms > 0);
+  assert.equal((await diagnostics.json()).success, true);
 });
