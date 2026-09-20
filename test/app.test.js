@@ -29,7 +29,10 @@ test("web lab, search UI, API metadata, health, readiness and diagnostics work o
   assert.match(html, /inspectResult/);
   assert.match(html, /data-tag/);
   assert.match(html, /v\.title/);
-  assert.match(html, /v\.image/);\n  assert.match(html, /data-result/);\n  assert.match(html, /Open details/);\n  assert.match(html, /scrollIntoView/);
+  assert.match(html, /v\.image/);
+  assert.match(html, /data-result/);
+  assert.match(html, /Open details/);
+  assert.match(html, /scrollIntoView/);
   assert.match(html, /Diagnostics/);
 
   const meta = await fetch(base + "/api");
